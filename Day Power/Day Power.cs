@@ -111,7 +111,8 @@ namespace cAlgo
             public double Body()
             {
 
-                if (Open == 0 || Close == 0) return -1;
+                if (Open == 0 || Close == 0)
+                    return -1;
 
                 return (Open > Close) ? Open - Close : (Close > Open) ? Close - Open : -2;
 
@@ -124,7 +125,8 @@ namespace cAlgo
             public double Shadow()
             {
 
-                if (High == 0 || Low == 0) return -1;
+                if (High == 0 || Low == 0)
+                    return -1;
 
                 return (High > Low) ? High - Low : -2;
 
@@ -273,7 +275,8 @@ namespace cAlgo
         {
 
             // --> Se il timeframe è superiore o uguale al giornaliero devo uscire
-            if (TimeFrame >= TimeFrame.Daily) Print("{0} : USE THIS INDICATOR ON TIMEFRAME LOWER 1DAY", NAME);
+            if (TimeFrame >= TimeFrame.Daily)
+                Print("{0} : USE THIS INDICATOR ON TIMEFRAME LOWER 1DAY", NAME);
 
             // --> Stampo nei log la versione corrente
             Print("{0} : {1}", NAME, VERSION);
@@ -282,8 +285,10 @@ namespace cAlgo
             _checkProductUpdate();
 
             // --> L'utente potrebbe aver inserito un colore errato
-            if (Color.FromName(ColorLong).ToArgb() == 0) ColorLong = "DodgerBlue";
-            if (Color.FromName(ColorShort).ToArgb() == 0) ColorShort = "Red";
+            if (Color.FromName(ColorLong).ToArgb() == 0)
+                ColorLong = "DodgerBlue";
+            if (Color.FromName(ColorShort).ToArgb() == 0)
+                ColorShort = "Red";
 
         }
 
@@ -298,7 +303,8 @@ namespace cAlgo
             // --> Non esiste ancora un metodo per rimuovere l'indicatore dal grafico, quindi ci limitiamo a uscire
             // --> Risparmio risorse controllando solo quando mi trovo sull'ultima candela, quella corrente
             // --> Devo avere in memoria abbastanza candele daily
-            if (TimeFrame >= TimeFrame.Daily) return;
+            if (TimeFrame >= TimeFrame.Daily)
+                return;
 
             // --> Deve essere inizializzata
             if (FirstCandleOfTheDay == null)
@@ -312,8 +318,10 @@ namespace cAlgo
             // --> Poichè l'indice non corrisponde a quello giornaliero, devo ricreare le aperture e le chiusure
             DateTime now = Bars.OpenTimes[index];
 
-            if (Bars[index].High > DayHighestPrice || DayHighestPrice == 0) DayHighestPrice = Bars[index].High;
-            if (Bars[index].Low < DayLowestPrice || DayLowestPrice == 0) DayLowestPrice = Bars[index].Low;
+            if (Bars[index].High > DayHighestPrice || DayHighestPrice == 0)
+                DayHighestPrice = Bars[index].High;
+            if (Bars[index].Low < DayLowestPrice || DayLowestPrice == 0)
+                DayLowestPrice = Bars[index].Low;
 
             // --> Ricreo il cambio candela daily
             // --> Ad ogni cambio candela corrente devo aggiornare i dati
@@ -352,7 +360,8 @@ namespace cAlgo
             }
 
             // --> Se non ho abbastanza candele devo uscire
-            if (DailyBars.Count < BoxPeriod) return;
+            if (DailyBars.Count < BoxPeriod)
+                return;
 
             double HighestBody = 0;
             double HighestBodyShadow = 0;
@@ -369,9 +378,11 @@ namespace cAlgo
                 double CurrentBody = DailyBars[CurrentIndex].Body();
                 double CurrentBodyShadow = DailyBars[CurrentIndex].Shadow();
 
-                if (CurrentBody > HighestBody) HighestBody = CurrentBody;
+                if (CurrentBody > HighestBody)
+                    HighestBody = CurrentBody;
 
-                if (CurrentBodyShadow > HighestBodyShadow) HighestBodyShadow = CurrentBodyShadow;
+                if (CurrentBodyShadow > HighestBodyShadow)
+                    HighestBodyShadow = CurrentBodyShadow;
 
             }
 
@@ -424,7 +435,8 @@ namespace cAlgo
                     FiboDown.IsInteractive = FiboEditable;
                     FiboDown.DisplayPrices = FiboPrice;
 
-                    if (!FiboEditable) {
+                    if (!FiboEditable)
+                    {
 
                         _standardFibo(ref FiboUp);
                         _standardFibo(ref FiboDown);
@@ -481,7 +493,7 @@ namespace cAlgo
         private void _standardFibo(ref ChartFibonacciRetracement MyFibo)
         {
 
-            decimal[] DefaultFiboLevels = new[]
+            decimal[] DefaultFiboLevels = new[] 
             {
                 0.0m,
                 23.6m,
@@ -510,7 +522,8 @@ namespace cAlgo
         {
 
             Chart.DrawStaticText(NAME + "Debug", string.Format("{0} : {1}", NAME, mex), VerticalAlignment.Bottom, HorizontalAlignment.Right, Color.Red);
-            if (doPrint) Print(mex);
+            if (doPrint)
+                Print(mex);
 
         }
 
@@ -525,10 +538,10 @@ namespace cAlgo
                 return;
 
             // --> Organizzo i dati per la richiesta degli aggiornamenti
-            Guru.API.RequestProductInfo Request = new Guru.API.RequestProductInfo
+            Guru.API.RequestProductInfo Request = new Guru.API.RequestProductInfo 
             {
 
-                MyProduct = new Guru.Product
+                MyProduct = new Guru.Product 
                 {
 
                     ID = ID,
@@ -679,7 +692,7 @@ namespace Guru
             {
 
                 // --> Strutturo le informazioni per la richiesta POST
-                NameValueCollection data = new NameValueCollection
+                NameValueCollection data = new NameValueCollection 
                 {
                     {
                         "account_broker",
@@ -724,8 +737,7 @@ namespace Guru
                 // -->>> Nel cBot necessita l'attivazione di "AccessRights = AccessRights.FullAccess"
                 ProductInfo.LastProduct = JsonConvert.DeserializeObject<Product>(ProductInfo.Source);
 
-            }
-            catch (Exception Exp)
+            } catch (Exception Exp)
             {
 
                 // --> Qualcosa è andato storto, registro l'eccezione
